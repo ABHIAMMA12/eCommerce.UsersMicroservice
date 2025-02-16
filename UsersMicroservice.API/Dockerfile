@@ -17,11 +17,11 @@ RUN dotnet build "./UsersMicroservice.API.csproj" -c $BUILD_CONFIGURATION -o /ap
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./UsersMicroservice.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./UsersMicroservice.API.csproj"  -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENV POSTGRES_HOST=localhost
-ENV POSTRES_PASSWORD=root
+ENV POSTGRES_PASSWORD=root
 ENTRYPOINT ["dotnet", "UsersMicroservice.API.dll"]
